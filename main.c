@@ -9,8 +9,13 @@ static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
 
   struct mg_http_message *hm = (struct mg_http_message *) ev_data;
 
-  if (mg_http_match_uri(hm, "/api")) {
+  if (mg_http_match_uri(hm, "/api/json")) {
     mg_http_reply(c, 200, "Content-Type: application/json\r\n", "{\"status\": \"ok\"}");
+    return;
+  }
+
+  if (mg_http_match_uri(hm, "/api/xml")) {
+    mg_http_reply(c, 200, "Content-Type: application/xml\r\n", "<?xml version=\"1.0\" encoding=\"utf-8\"?><response><status>ok</status></response>");
     return;
   }
 
@@ -27,4 +32,3 @@ int main(void) {
   mg_mgr_free(&mgr);
   return EXIT_SUCCESS;
 }
-
